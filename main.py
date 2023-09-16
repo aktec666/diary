@@ -10,20 +10,70 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///diary.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 #Создание db
 db = SQLAlchemy(app)
+#Создание таблицы
 
-#Задание №1. Создай таблицу БД
 class Card(db.Model):
+    #Создание полей
+    #id
     id = db.Column(db.Integer, primary_key=True)
+    #Заголовок
     title = db.Column(db.String(100), nullable=False)
-    subtitle = db.Column(db.String(200), nullable=False)
+    #Описание
+    subtitle = db.Column(db.String(300), nullable=False)
+    #Текст
     text = db.Column(db.Text, nullable=False)
 
-def __repr__(self):
+    #Вывод объекта и id
+    def __repr__(self):
         return f'<Card {self.id}>'
+    
+
+#Задание №1. Создать таблицу User
+
+
+
+
+
+
+
 
 
 #Запуск страницы с контентом
-@app.route('/')
+@app.route('/', methods=['GET','POST'])
+def login():
+        error = ''
+        if request.method == 'POST':
+            form_login = request.form['email']
+            form_password = request.form['password']
+            
+            #Задание №4. Реализовать проверку пользователей
+            
+
+
+            
+        else:
+            return render_template('login.html')
+
+
+
+@app.route('/reg', methods=['GET','POST'])
+def reg():
+    if request.method == 'POST':
+        login= request.form['email']
+        password = request.form['password']
+        
+        #Задание №3. Реализовать запись пользователей
+        
+
+        
+        return redirect('/')
+    
+    else:    
+        return render_template('registration.html')
+
+
+#Запуск страницы с контентом
+@app.route('/index')
 def index():
     #Отображение объектов из БД
     #Задание №2. Отоброзить объекты из БД в index.html
@@ -37,8 +87,8 @@ def index():
 #Запуск страницы c картой
 @app.route('/card/<int:id>')
 def card(id):
-    #Задание №2. Отоброзить нужную карточку по id
     card = Card.query.get(id)
+
     return render_template('card.html', card=card)
 
 #Запуск страницы c созданием карты
@@ -54,16 +104,18 @@ def form_create():
         subtitle =  request.form['subtitle']
         text =  request.form['text']
 
-        #Задание №2. Создайте сопосб записи данных в БД
+        #Создание объкта для передачи в дб
+
         card = Card(title=title, subtitle=subtitle, text=text)
+
         db.session.add(card)
         db.session.commit()
-
-
-
-        return redirect('/')
+        return redirect('/index')
     else:
         return render_template('create_card.html')
+
+
+
 
 
 if __name__ == "__main__":

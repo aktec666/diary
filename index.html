@@ -15,23 +15,31 @@
     <img src="../static/img/logo.svg" alt="logo" width="30" height="30">
     <ul class="main-list">
         <li class="list__item">
-          <a href="">
             <img src="../static/img/login.svg" alt="login" width="20" height="20">
-          </a>
+        </li>
     </ul>
   </header>
-  <main class="main">
+  <main>
     {% block content %}
-    <h1 class="main__title">{{card.title}}</h1>
-    <div class="main__block">
-      <h2 class="main__subtitle">{{card.subtitle}}</h2>
-      <div class="main__text">
-      {{card.text}}
-      </div>
-      <a class="main__link" href="/">Вернуться к записям</a>
-    </div>
+    <h1 class="main__title">Мои записи</h1>
+    <ul class="cards-list">
+      {% for el in cards%}
+      <li class="card">
+        <a class="card__link" href="/card/{{el.id}}">
+          <img class="card__img" src="../static/img/post_icon.png" width="250" height="250" alt="post_icon">
+          <div class="card__text">
+            <h2 class="card__title">{{el.title}}</h2>
+            <p class="card__subtitle">{{el.subtitle}}</p>
+          </div>
+        </a>
+      </li>
+      {% endfor %}
+      <li class="card card--creat">
+          <a class="creat__link" href="{{url_for('create')}}"></a>
+      </li>
+    </ul>
+    {% endblock %}
   </main>
-  {% endblock %}
   <footer>
 
   </footer>
